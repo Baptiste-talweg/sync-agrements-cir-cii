@@ -1,0 +1,36 @@
+name: Synchro agréments CIR-CII
+
+on:
+  schedule:
+    - cron: "0 5 * * 1"   # chaque lundi à 5h UTC (6h-7h heure de Paris)
+  workflow_dispatch:       # bouton « Run workflow » pour lancer à la main
+
+permissions:
+  contents: write          # autorise le robot GitHub à enregistrer les fichiers produits
+
+jobs:
+  synchro:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Récupérer le dépôt
+        uses: actions/checkout@v4
+
+      - name: Installer Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Télécharger, regrouper et comparer
+        run: python scripts/sync.py
+
+      - name: Enregistrer les fichiers s'ils ont changé
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add data/
+          if git diff --cached --quiet; then
+            echo "Aucun changement dans la source."
+          else
+            git commit -m "Synchro agréments $(date -u +%Y-%m-%d)"
+            git push
+          fi
