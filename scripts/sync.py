@@ -46,6 +46,8 @@ TYPES_COURTS = {
     "Organismes de recherche agréés": "Organisme de recherche (CIR)",
     "Experts scientifiques ou techniques": "Expert scientifique (CIR)",
     "Organismes privés agréés": "Organisme privé (CII)",
+    "Stylistes agréés auxquels peuvent faire appel les entreprises industrielles du secteur textile-habillement-cuir": "Styliste textile (CIR)",
+    "Bureaux de style agréés auxquels peuvent faire appel les entreprises industrielles du secteur textile-habillement-cuir": "Bureau de style textile (CIR)",
 }
 
 # Ordre des colonnes = noms des propriétés Notion
@@ -88,6 +90,12 @@ def cle(ligne):
     return "NOM-" + normaliser(ligne.get("Désignation")) + "|" + normaliser(ligne.get("Pays"))
 
 
+def option(txt):
+    """Valeur utilisable comme option Notion : pas de virgule, 100 caractères max."""
+    txt = re.sub(r"\s*,\s*", " / ", (txt or "").strip()).rstrip(". ")
+    return txt[:100]
+
+
 def annees(txt):
     return {int(a) for a in re.findall(r"\d{4}", txt or "")}
 
@@ -114,7 +122,7 @@ def regrouper(lignes):
         recente = max(e["lignes"], key=lambda l: entier(l["Fin d'agrément"]) or 0)
         siren = (recente.get("Numéro SIREN") or "").strip()
         a_cir, a_cii = sorted(e["annees"]["CIR"]), sorted(e["annees"]["CII"])
-        types = sorted({TYPES_COURTS.get(l["Type de structure"], l["Type de structure"])
+        types = sorted({option(TYPES_COURTS.get(l["Type de structure"], l["Type de structure"]))
                         for l in e["lignes"]})
         dispositifs = sorted({l["Dispositif"].strip().upper() for l in e["lignes"]})
         toutes = a_cir + a_cii
@@ -125,19 +133,19 @@ def regrouper(lignes):
             "Sigle": (recente.get("Sigle") or "").strip(),
             "Dispositifs": ", ".join(dispositifs),
             "Types de structure": ", ".join(types),
-            "Nature": recente["Type"].strip(),
+            "Nature": option(recente["Type"]),
             "Années CIR": ", ".join(map(str, a_cir)),
             "Années CII": ", ".join(map(str, a_cii)),
             "Première année": min(toutes) if toutes else "",
             "Fin CIR": max(a_cir) if a_cir else "",
             "Fin CII": max(a_cii) if a_cii else "",
-            "Activité": (recente.get("Activité") or "").strip(),
-            "Catégorie entreprise": (recente.get("Base SIRENE : Catégorie de l'établissement siège") or "").strip(),
+            "Activité": option(recente.get("Activité")),
+            "Catégorie entreprise": option(recente.get("Base SIRENE : Catégorie de l'établissement siège")),
             "Code APE": (recente.get("Base SIRENE : Code APE de l'établissement siège") or "").strip(),
             "Ville": (recente.get("Ville") or "").strip(),
-            "Département": (recente.get("Département") or "").strip(),
-            "Région": (recente.get("Région") or "").strip(),
-            "Pays": (recente.get("Pays") or "").strip(),
+            "Département": option(recente.get("Département")),
+            "Région": option(recente.get("Région")),
+            "Pays": option(recente.get("Pays")),
             "Fiche entreprise": f"https://annuaire-entreprises.data.gouv.fr/entreprise/{siren}" if siren else "",
         }
     return fiches
