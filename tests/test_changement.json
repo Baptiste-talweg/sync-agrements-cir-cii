@@ -1,0 +1,52 @@
+{
+ "lot": "TEST",
+ "nombre": 2,
+ "changements": [
+  {
+   "action": "creation",
+   "Nom": "ZZ TEST TALWEG",
+   "Clé": "NOM-ZZ TEST TALWEG|FRANCE",
+   "SIREN": "",
+   "Sigle": "",
+   "Dispositifs": "CII",
+   "Types de structure": "Organisme privé (CII)",
+   "Nature": "Organisme",
+   "Années CIR": "",
+   "Années CII": "2026, 2027, 2028",
+   "Première année": 2026,
+   "Fin CIR": "",
+   "Fin CII": 2028,
+   "Activité": "Informatique",
+   "Catégorie entreprise": "PME",
+   "Code APE": "6202A",
+   "Ville": "RENNES",
+   "Département": "Ille-et-Vilaine",
+   "Région": "Bretagne",
+   "Pays": "France",
+   "Fiche entreprise": ""
+  },
+  {
+   "action": "mise_a_jour",
+   "Nom": "AGILICOM",
+   "Clé": "SIREN-450352877",
+   "SIREN": "450352877",
+   "Sigle": "",
+   "Dispositifs": "CII, CIR",
+   "Types de structure": "Organisme de recherche (CIR), Organisme privé (CII)",
+   "Nature": "Organisme",
+   "Années CIR": "2012, 2013, 2014, 2015, 2016, 2017",
+   "Années CII": "2013, 2014",
+   "Première année": 2012,
+   "Fin CIR": 2017,
+   "Fin CII": 2014,
+   "Activité": "Informatique",
+   "Catégorie entreprise": "PME",
+   "Code APE": "3320C",
+   "Ville": "BALLAN MIRE (TEST MAJ)",
+   "Département": "Indre-et-Loire",
+   "Région": "Centre-Val de Loire",
+   "Pays": "France",
+   "Fiche entreprise": "https://annuaire-entreprises.data.gouv.fr/entreprise/450352877"
+  }
+ ]
+}
