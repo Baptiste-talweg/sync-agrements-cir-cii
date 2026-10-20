@@ -13,17 +13,20 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Récupérer le dépôt
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
 
       - name: Installer Python
-        uses: actions/setup-python@v5
+        uses: actions/setup-python@v6
         with:
           python-version: "3.12"
 
       - name: Télécharger, regrouper et comparer
         run: python scripts/sync.py
 
-      - name: Enregistrer les fichiers s'ils ont changé
+      - name: Noter la date de vérification (évite la mise en veille du workflow par GitHub)
+        run: date -u +"%Y-%m-%d %H:%M UTC" > data/derniere_verification.txt
+
+      - name: Enregistrer les fichiers
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
